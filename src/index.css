@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: "MaruMoniKRound";
+    src: url("./assets/fonts/x12y16pxMaruMoniK---Round-1.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "BaseballPark";
+    src: url("./assets/fonts/baseballpark.ttf") format("truetype");
+}
+
+body {
+    font-family: "MaruMoniKRound", sans-serif;
+}
+
+h1 {
+    font-family: "BaseballPark", sans-serif;
+}
+
+.um2star {
+    font-family: sans-serif;
+}
