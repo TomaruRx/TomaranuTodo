@@ -78,7 +78,14 @@ const App = () => {
       </div>
       <TodoList todos={todos} />
 
-      <div className="mt-4 space-y-2 rounded-md border border-slate-300 bg-white p-3 drop-shadow">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          addNewTodo();
+        }}
+        aria-labelledby="newTodoHeading"
+        className="mt-4 space-y-2 rounded-md border border-slate-300 bg-white p-3 drop-shadow"
+      >
         <h2 id="newTodoHeading" className="text-lg font-bold">
           新しいタスクの追加
         </h2>
@@ -160,16 +167,17 @@ const App = () => {
         </div>
 
         <button
-          type="button"
-          onClick={addNewTodo}
+          type="submit"
+          disabled={isNewTodoNameInvalid}
           className={twMerge(
             "cursor-pointer rounded-md px-3 py-1",
             "bg-orange-500 font-bold text-white hover:bg-orange-600",
+            "disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-orange-500",
           )}
         >
           追加
         </button>
-      </div>
+      </form>
     </div>
   );
 };
