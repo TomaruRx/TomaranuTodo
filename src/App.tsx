@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 const localStorageKey = "TodoApp";
+const userNameStorageKey = "TodoApp.userName";
 
 type StoredTodo = {
   id: string;
@@ -45,6 +46,10 @@ const getTodoNameError = (name: string): string => {
 
 const App = () => {
   const [todos, setTodos] = useState<Todo[]>(loadTodos);
+  const [userName, setUserName] = useState(() => {
+    const savedName = localStorage.getItem(userNameStorageKey) ?? "";
+    return savedName === "User" ? "" : savedName;
+  });
   const [newTodoName, setNewTodoName] = useState("");
   const [newTodoTag, setNewTodoTag] = useState("");
   const [newTodoPriority, setNewTodoPriority] = useState(3);
@@ -60,6 +65,10 @@ const App = () => {
   useEffect(() => {
     localStorage.setItem(localStorageKey, JSON.stringify(todos));
   }, [todos]);
+
+  useEffect(() => {
+    localStorage.setItem(userNameStorageKey, userName);
+  }, [userName]);
 
   const updateNewTodoName = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTodoName(e.target.value);
@@ -125,7 +134,20 @@ const App = () => {
       <header className="app-header">
         <div className="header-rail">
           <span>Tomaranu / Personal task index</span>
-          <span aria-hidden="true">＋ ＋ ＋</span>
+          <div className="header-profile">
+            <input
+              id="userName"
+              name="userName"
+              type="text"
+              aria-label="表示名"
+              autoComplete="nickname"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              className="user-name-input"
+              placeholder="UserName"
+            />
+            <span aria-hidden="true">＋ ＋ ＋</span>
+          </div>
         </div>
         <div className="hero">
           <div className="hero-copy">
@@ -137,7 +159,10 @@ const App = () => {
           <HeroArt />
         </div>
         <div className="welcome-bar">
-          <WelcomeMessage userName="User" uncompletedCount={uncompletedCount} />
+          <WelcomeMessage
+            userName={userName.trim() || "User"}
+            uncompletedCount={uncompletedCount}
+          />
           <span className="welcome-mark" aria-hidden="true">
             ✳
           </span>
