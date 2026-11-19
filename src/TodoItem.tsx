@@ -41,7 +41,14 @@ const TodoItem = (props: Props) => {
             flip="horizontal"
             className="todo-icon"
           />
-          <span className="todo-name">{todo.name}</span>
+          <span className="todo-title">
+            <span className="todo-name">{todo.name}</span>
+            {todo.tag && (
+              <span className="todo-tag" aria-label={`タグ: ${todo.tag}`}>
+                {todo.tag}
+              </span>
+            )}
+          </span>
         </label>
 
         <div aria-label={`優先度: ${todo.priority}`} className="todo-priority">

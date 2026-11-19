@@ -15,6 +15,7 @@ const localStorageKey = "TodoApp";
 type StoredTodo = {
   id: string;
   name: string;
+  tag?: string;
   isDone: boolean;
   priority: number;
   deadline: string | null;
@@ -44,6 +45,7 @@ const getTodoNameError = (name: string): string => {
 const App = () => {
   const [todos, setTodos] = useState<Todo[]>(loadTodos);
   const [newTodoName, setNewTodoName] = useState("");
+  const [newTodoTag, setNewTodoTag] = useState("");
   const [newTodoPriority, setNewTodoPriority] = useState(3);
   const [newTodoDeadline, setNewTodoDeadline] = useState<Date | null>(null);
   const [isNameTouched, setIsNameTouched] = useState(false);
@@ -82,6 +84,7 @@ const App = () => {
     const newTodo: Todo = {
       id: uuid(),
       name: newTodoName.trim(),
+      tag: newTodoTag.trim(),
       isDone: false,
       priority: newTodoPriority,
       deadline: newTodoDeadline,
@@ -89,6 +92,7 @@ const App = () => {
     // console.log(newTodo.deadline, newTodo.deadline instanceof Date);
     setTodos((currentTodos) => [...currentTodos, newTodo]);
     setNewTodoName("");
+    setNewTodoTag("");
     setNewTodoPriority(3);
     setNewTodoDeadline(null);
     setIsNameTouched(false);
@@ -243,25 +247,39 @@ const App = () => {
           </h2>
 
           <div className="form-field">
-            <div className="field-control">
-              <label htmlFor="newTodoName">名前</label>
-              <input
-                id="newTodoName"
-                name="todoName"
-                type="text"
-                required
-                value={newTodoName}
-                onChange={updateNewTodoName}
-                aria-invalid={showNewTodoNameError}
-                aria-describedby={
-                  showNewTodoNameError ? "newTodoNameError" : undefined
-                }
-                className={twMerge(
-                  "text-input",
-                  showNewTodoNameError && "input-invalid",
-                )}
-                placeholder="2文字以上、32文字以内で入力してください"
-              />
+            <div className="name-tag-fields">
+              <div className="field-control">
+                <label htmlFor="newTodoName">名前</label>
+                <input
+                  id="newTodoName"
+                  name="todoName"
+                  type="text"
+                  required
+                  value={newTodoName}
+                  onChange={updateNewTodoName}
+                  aria-invalid={showNewTodoNameError}
+                  aria-describedby={
+                    showNewTodoNameError ? "newTodoNameError" : undefined
+                  }
+                  className={twMerge(
+                    "text-input",
+                    showNewTodoNameError && "input-invalid",
+                  )}
+                  placeholder="2文字以上、32文字以内で入力してください"
+                />
+              </div>
+              <div className="field-control">
+                <label htmlFor="newTodoTag">タグ（任意）</label>
+                <input
+                  id="newTodoTag"
+                  name="todoTag"
+                  type="text"
+                  value={newTodoTag}
+                  onChange={(e) => setNewTodoTag(e.target.value)}
+                  className="text-input"
+                  placeholder="例：勉強"
+                />
+              </div>
             </div>
             {showNewTodoNameError && (
               <div
@@ -295,30 +313,32 @@ const App = () => {
             </div>
           </fieldset>
 
-          <div className="form-field field-control">
-            <label htmlFor="deadline">期限</label>
-            <input
-              type="datetime-local"
-              id="deadline"
-              name="deadline"
-              value={
-                newTodoDeadline
-                  ? dayjs(newTodoDeadline).format("YYYY-MM-DDTHH:mm:ss")
-                  : ""
-              }
-              onChange={updateDeadline}
-              className="text-input deadline-input"
-            />
-          </div>
+          <div className="form-field deadline-add-fields">
+            <div className="field-control deadline-field">
+              <label htmlFor="deadline">期限</label>
+              <input
+                type="datetime-local"
+                id="deadline"
+                name="deadline"
+                value={
+                  newTodoDeadline
+                    ? dayjs(newTodoDeadline).format("YYYY-MM-DDTHH:mm:ss")
+                    : ""
+                }
+                onChange={updateDeadline}
+                className="text-input deadline-input"
+              />
+            </div>
 
-          <button
-            type="submit"
-            disabled={isNewTodoNameInvalid}
-            className="button button-add"
-          >
-            追加
-            <span aria-hidden="true">↗</span>
-          </button>
+            <button
+              type="submit"
+              disabled={isNewTodoNameInvalid}
+              className="button button-add"
+            >
+              追加
+              <span aria-hidden="true">↗</span>
+            </button>
+          </div>
         </form>
       </main>
       <footer className="app-footer">
@@ -333,7 +353,9 @@ const App = () => {
         >
           Portfolio↗
         </a>
-        <div className="center">&copy; 2026 TomaranuTodo. All rights reserved.</div>
+        <div className="center">
+          &copy; 2026 TomaranuTodo. All rights reserved.
+        </div>
       </footer>
     </div>
   );
