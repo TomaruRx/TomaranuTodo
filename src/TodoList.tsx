@@ -1,4 +1,3 @@
-import React from "react";
 import type { Todo } from "./types";
 import dayjs from "dayjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +10,7 @@ import { twMerge } from "tailwind-merge";
 
 type Props = {
     todos: Todo[];
+    updateIsDone: (id: string, value: boolean) => void;
 };
 
 const num2star = (n: number): string => "✢".repeat(4 - n);
@@ -37,19 +37,27 @@ const TodoList = (props: Props) => {
                 todo.isDone && "bg-blue-50 opacity-50"
                 )}
             >
-            <div className="flex flex-row items-baseline text-slate-700">
-                <FontAwesomeIcon icon={faBolt} flip="horizontal" className="mr-1 text-orange-400" />
-                <div
-                    className={twMerge(
-                        "text-lg font-bold",
-                        todo.isDone && "line-through decoration-2"
-                    )}
+            <div className="flex min-w-0 flex-row flex-wrap items-baseline gap-y-1 text-slate-700">
+                <label className="flex min-w-0 cursor-pointer items-baseline">
+                    <input
+                        type="checkbox"
+                        checked={todo.isDone}
+                        onChange={(e) => props.updateIsDone(todo.id, e.target.checked)}
+                        className="mr-3 shrink-0 cursor-pointer self-center"
+                    />
+                    <FontAwesomeIcon icon={faBolt} flip="horizontal" className="mr-1 shrink-0 text-orange-400" />
+                    <span
+                        className={twMerge(
+                            "min-w-0 text-lg font-bold wrap-anywhere",
+                            todo.isDone && "line-through decoration-2"
+                        )}
                     >
-                    {todo.name}
-                </div>
+                        {todo.name}
+                    </span>
+                </label>
 
                 <div className="ml-2"></div>
-                <div className="ml-2 text-orange-400 um2star">
+                <div aria-label={`優先度: ${todo.priority}`} className="ml-2 text-orange-400 um2star">
                     {num2star(todo.priority)}
                 </div>
                 

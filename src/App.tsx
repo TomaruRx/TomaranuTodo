@@ -67,6 +67,18 @@ const App = () => {
     };
   // console.log(JSON.stringify(todos, null, 2));
 
+  const updateIsDone = (id: string, value: boolean) => {
+    setTodos((currentTodos) =>
+      currentTodos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, isDone: value };
+        } else {
+          return todo;
+        }
+      }),
+    );
+  };
+
   return (
     <div className="mx-4 mt-10 max-w-2xl md:mx-auto">
       <h1 className="mb-4 text-2xl font-bold">TomaranuTodo!</h1>
@@ -76,7 +88,7 @@ const App = () => {
           uncompletedCount={uncompletedCount}
         />
       </div>
-      <TodoList todos={todos} />
+      <TodoList todos={todos} updateIsDone={updateIsDone} />
 
       <form
         onSubmit={(e) => {
