@@ -11,6 +11,7 @@ import { twMerge } from "tailwind-merge";
 type Props = {
     todos: Todo[];
     updateIsDone: (id: string, value: boolean) => void;
+    remove: (id: string) => void;
 };
 
 const num2star = (n: number): string => "✢".repeat(4 - n);
@@ -33,11 +34,11 @@ const TodoList = (props: Props) => {
             <div 
                 key={todo.id}
                 className={twMerge(
-                "rounded-md border border-slate-500 bg-white px-3 py-1.5 drop-shadow-md",
+                "flex items-center justify-between gap-3 rounded-md border border-slate-500 bg-white px-3 py-1.5 drop-shadow-md",
                 todo.isDone && "bg-blue-50 opacity-50"
                 )}
             >
-            <div className="flex min-w-0 flex-row flex-wrap items-baseline gap-y-1 text-slate-700">
+            <div className="flex min-w-0 flex-1 flex-row flex-wrap items-baseline gap-y-1 text-slate-700">
                 <label className="flex min-w-0 cursor-pointer items-baseline">
                     <input
                         type="checkbox"
@@ -81,6 +82,17 @@ const TodoList = (props: Props) => {
                 </div>
             )}
             </div>
+            <button
+                type="button"
+                onClick={() => props.remove(todo.id)}
+                aria-label={`${todo.name}を削除`}
+                className={twMerge(
+                    "shrink-0 cursor-pointer rounded-md px-2 py-1 text-sm font-bold",
+                    "bg-rose-300 text-white hover:bg-rose-500",
+                )}
+            >
+                Delete
+            </button>
             </div>
         ))}
         </div>
