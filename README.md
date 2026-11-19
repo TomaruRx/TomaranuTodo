@@ -1,8 +1,8 @@
 # TomaranuTodo!
 
-![サンプル画面](docs/images/screenshot01.png)
+💠サイトページ「[TomaranuTodo!](https://tomarurx.github.io/TomaranuTodo/)」へ
 
-💠アクセスは[こちら](https://tomarurx.github.io/TomaranuTodo/)から
+![サンプル画面](docs/images/screenshot01.png)
 
 React・TypeScriptで制作した、学習や日常のタスクを管理するTodoアプリです。タスク名にタグ・優先度・期限を添えて整理でき、タスクと表示名はブラウザーに保存されます。
 

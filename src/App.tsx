@@ -9,7 +9,7 @@ import { v4 as uuid } from "uuid";
 import { twMerge } from "tailwind-merge";
 import dayjs from "dayjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { faSun, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 const localStorageKey = "TodoApp";
 const userNameStorageKey = "TodoApp.userName";
@@ -164,7 +164,7 @@ const App = () => {
             uncompletedCount={uncompletedCount}
           />
           <span className="welcome-mark" aria-hidden="true">
-            ✳
+            <FontAwesomeIcon icon={faSun} />
           </span>
         </div>
       </header>
