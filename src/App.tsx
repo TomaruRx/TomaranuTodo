@@ -92,7 +92,7 @@ const App = () => {
     setNewTodoPriority(3);
     setNewTodoDeadline(null);
     setIsNameTouched(false);
-    };
+  };
   // console.log(JSON.stringify(todos, null, 2));
 
   const updateIsDone = (id: string, value: boolean) => {
@@ -116,128 +116,225 @@ const App = () => {
   };
 
   return (
-    <div className="mx-4 mt-10 max-w-2xl md:mx-auto">
-      <h1 className="mb-4 text-2xl font-bold">TomaranuTodo!</h1>
-      <div className="mb-4">
-        <WelcomeMessage
-          userName="User"
-          uncompletedCount={uncompletedCount}
-        />
-      </div>
-      <TodoList todos={todos} updateIsDone={updateIsDone} remove={remove} />
+    <div className="app-shell">
+      <header className="app-header">
+        <div className="header-rail">
+          <span>Tomaranu / Personal task index</span>
+          <span aria-hidden="true">＋ ＋ ＋</span>
+        </div>
+        <div className="hero">
+          <div className="hero-copy">
+            {/* <p className="eyebrow">ひとこと</p> */}
+            <h1 className="app-title">
+              Tomaranu<span>Todo!</span>
+            </h1>
+          </div>
+          <div className="hero-art" aria-hidden="true">
+            <svg className="orbit-art" viewBox="0 0 320 260" fill="none">
+              <path d="M0 130H320M160 0V260" className="art-guide" />
+              <g stroke="currentColor" strokeWidth="1.2">
+                <ellipse
+                  cx="160"
+                  cy="130"
+                  rx="139"
+                  ry="51"
+                  transform="rotate(-35 160 130)"
+                />
+                <ellipse
+                  cx="160"
+                  cy="130"
+                  rx="139"
+                  ry="65"
+                  transform="rotate(-35 160 130)"
+                />
+                <ellipse
+                  cx="160"
+                  cy="130"
+                  rx="139"
+                  ry="81"
+                  transform="rotate(-35 160 130)"
+                />
+                <ellipse
+                  cx="160"
+                  cy="130"
+                  rx="139"
+                  ry="99"
+                  transform="rotate(-35 160 130)"
+                />
+                <ellipse
+                  cx="160"
+                  cy="130"
+                  rx="109"
+                  ry="112"
+                  transform="rotate(-35 160 130)"
+                />
+                <ellipse
+                  cx="160"
+                  cy="130"
+                  rx="79"
+                  ry="112"
+                  transform="rotate(-35 160 130)"
+                />
+                <ellipse
+                  cx="160"
+                  cy="130"
+                  rx="44"
+                  ry="112"
+                  transform="rotate(-35 160 130)"
+                />
+              </g>
+              <path
+                d="M149 130H171M160 119V141"
+                stroke="black"
+                strokeWidth="3"
+              />
+              <circle cx="261" cy="62" r="8" fill="black" />
+              <circle cx="61" cy="191" r="5" fill="currentColor" />
+            </svg>
+            <div className="art-caption">
+              <span>TASKS IN MOTION</span>
+              <span>↗</span>
+            </div>
+          </div>
+        </div>
+        <div className="welcome-bar">
+          <WelcomeMessage userName="User" uncompletedCount={uncompletedCount} />
+          <span className="welcome-mark" aria-hidden="true">
+            ✳
+          </span>
+        </div>
+      </header>
 
-      <button
-        type="button"
-        onClick={removeCompletedTodos}
-        disabled={completedCount === 0}
-        className={twMerge(
-          "mt-4 cursor-pointer rounded-md px-3 py-1 font-medium",
-          "bg-rose-500 text-white hover:bg-rose-600",
-          "disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-rose-500",
-        )}
-      >
-        Delete completed tasks
-      </button>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          addNewTodo();
-        }}
-        aria-labelledby="newTodoHeading"
-        className="mt-4 space-y-2 rounded-md border border-slate-300 bg-white p-3 drop-shadow"
-      >
-        <h2 id="newTodoHeading" className="text-lg font-bold">
-          新しいタスクの追加
-        </h2>
+      <main className="workspace">
+        <section className="task-panel" aria-labelledby="taskListHeading">
+          <div className="section-heading">
+            <h2 id="taskListHeading">
+              <span className="section-number" aria-hidden="true">
+                01 /
+              </span>{" "}
+              タスク一覧
+            </h2>
+            <span className="task-total">{todos.length} 件</span>
+          </div>
+          <TodoList todos={todos} updateIsDone={updateIsDone} remove={remove} />
 
-        <div>
-          <div className="flex items-center space-x-2">
-            <label className="font-bold" htmlFor="newTodoName">
-              名前
-            </label>
+          <button
+            type="button"
+            onClick={removeCompletedTodos}
+            disabled={completedCount === 0}
+            className="button button-bulk"
+          >
+            Delete completed tasks
+          </button>
+        </section>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            addNewTodo();
+          }}
+          aria-labelledby="newTodoHeading"
+          className="todo-form"
+        >
+          <h2 id="newTodoHeading" className="form-heading">
+            <span className="section-number" aria-hidden="true">
+              02 /
+            </span>
+            新しいタスクの追加
+          </h2>
+
+          <div className="form-field">
+            <div className="field-control">
+              <label htmlFor="newTodoName">名前</label>
+              <input
+                id="newTodoName"
+                name="todoName"
+                type="text"
+                required
+                value={newTodoName}
+                onChange={updateNewTodoName}
+                aria-invalid={showNewTodoNameError}
+                aria-describedby={
+                  showNewTodoNameError ? "newTodoNameError" : undefined
+                }
+                className={twMerge(
+                  "text-input",
+                  showNewTodoNameError && "input-invalid",
+                )}
+                placeholder="2文字以上、32文字以内で入力してください"
+              />
+            </div>
+            {showNewTodoNameError && (
+              <div
+                id="newTodoNameError"
+                aria-live="polite"
+                className="field-error"
+              >
+                <FontAwesomeIcon icon={faTriangleExclamation} />
+                <div>{newTodoNameError}</div>
+              </div>
+            )}
+          </div>
+
+          <fieldset className="form-field">
+            <legend>優先度</legend>
+            <div className="priority-options">
+              {["高", "中", "低"].map((label, index) => (
+                <label key={label} className="priority-choice">
+                  <input
+                    id={`priority-${index + 1}`}
+                    name="priorityGroup"
+                    type="radio"
+                    value={index + 1}
+                    checked={newTodoPriority === index + 1}
+                    onChange={updateNewTodoPriority}
+                    // onChange={(e) => setNewTodoPriority(Number(e.target.value))}
+                  />
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <div className="form-field field-control">
+            <label htmlFor="deadline">期限</label>
             <input
-              id="newTodoName"
-              name="todoName"
-              type="text"
-              required
-              value={newTodoName}
-              onChange={updateNewTodoName}
-              aria-invalid={showNewTodoNameError}
-              aria-describedby={
-                showNewTodoNameError ? "newTodoNameError" : undefined
+              type="datetime-local"
+              id="deadline"
+              name="deadline"
+              value={
+                newTodoDeadline
+                  ? dayjs(newTodoDeadline).format("YYYY-MM-DDTHH:mm:ss")
+                  : ""
               }
-              className={twMerge(
-                "min-w-0 grow rounded-md border border-gray-300 p-2",
-                showNewTodoNameError && "border-red-500 outline-red-500",
-              )}
-              placeholder="2文字以上、32文字以内で入力してください"
+              onChange={updateDeadline}
+              className="text-input deadline-input"
             />
           </div>
-          {showNewTodoNameError && (
-            <div
-              id="newTodoNameError"
-              aria-live="polite"
-              className="ml-10 flex items-center space-x-1 text-sm font-medium text-red-500"
-            >
-              <FontAwesomeIcon
-                icon={faTriangleExclamation}
-                className="mr-0.5"
-              />
-              <div>{newTodoNameError}</div>
-            </div>
-          )}
-        </div>
 
-        <fieldset>
-          <legend className="mb-1 font-bold">優先度</legend>
-          <div className="flex gap-5">
-            {["高", "中", "低"].map((label, index) => (
-              <label key={label} className="flex items-center space-x-1">
-                <input
-                  id={`priority-${index + 1}`}
-                  name="priorityGroup"
-                  type="radio"
-                  value={index + 1}
-                  checked={newTodoPriority === index + 1}
-                  onChange={updateNewTodoPriority}
-                  // onChange={(e) => setNewTodoPriority(Number(e.target.value))}
-                />
-                <span>{label}</span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <label className="font-bold" htmlFor="deadline">
-            期限
-          </label>
-          <input
-            type="datetime-local"
-            id="deadline"
-            name="deadline"
-            value={
-              newTodoDeadline
-                ? dayjs(newTodoDeadline).format("YYYY-MM-DDTHH:mm:ss")
-                : ""
-            }
-            onChange={updateDeadline}
-            className="max-w-full min-w-0 rounded-md border border-gray-300 px-2 py-0.5"
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={isNewTodoNameInvalid}
-          className={twMerge(
-            "cursor-pointer rounded-md px-3 py-1",
-            "bg-orange-500 font-bold text-white hover:bg-orange-600",
-            "disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-orange-500",
-          )}
+          <button
+            type="submit"
+            disabled={isNewTodoNameInvalid}
+            className="button button-add"
+          >
+            追加
+            <span aria-hidden="true">↗</span>
+          </button>
+        </form>
+      </main>
+      <footer className="app-footer">
+        <span>TomaranuTodo!</span>
+        <span className="footer-bars" aria-hidden="true" />
+        <a
+          className="footer-link"
+          href="https://tomarurx.github.io/Portfolio/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Portfolio（新しいタブで開く）"
         >
-          追加
-        </button>
-      </form>
+          Portfolio↗
+        </a>
+        <div className="center">&copy; 2026 TomaranuTodo. All rights reserved.</div>
+      </footer>
     </div>
   );
 };
