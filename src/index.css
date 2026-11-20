@@ -16,6 +16,8 @@
   --black: #000000;
   --white: #ffffff;
   --blue: #000fff;
+  --danger: #ed640f;
+  --danger-bg: #ffffff;
   font-family: "MaruMoniKRound", ui-monospace, monospace;
   color: var(--black);
   background: var(--lavender);
@@ -346,6 +348,21 @@ input {
 .todo-item-done .todo-icon,
 .todo-item-done .todo-priority {
   color: var(--gray);
+}
+.todo-item-urgent,
+.todo-item-urgent:hover {
+  border-color: var(--danger);
+}
+.todo-item-urgent .todo-name,
+.todo-item-urgent .todo-icon,
+.todo-item-urgent .todo-priority {
+  color: var(--danger);
+}
+.todo-deadline-alert {
+  padding: 3px 6px;
+  color: var(--gray);
+  font-size: 11px;
+  line-height: 1.5;
 }
 
 .button {

@@ -10,11 +10,13 @@ import { twMerge } from "tailwind-merge";
 
 type Props = {
   todo: Todo;
+  now: number;
   updateIsDone: (id: string, value: boolean) => void;
   remove: (id: string) => void;
 };
 
 const num2star = (n: number): string => "✢".repeat(4 - n);
+const oneDayMs = 24 * 60 * 60 * 1000;
 
 const formattedDate = (date: Date) => {
   if (date.getHours() === 0 && date.getMinutes() === 0) {
@@ -25,9 +27,21 @@ const formattedDate = (date: Date) => {
 
 const TodoItem = (props: Props) => {
   const todo = props.todo;
+  const deadlineTime = todo.deadline?.getTime();
+  const isUrgent =
+    !todo.isDone &&
+    deadlineTime !== undefined &&
+    deadlineTime <= props.now + oneDayMs;
+  const isOverdue = isUrgent && deadlineTime <= props.now;
 
   return (
-    <div className={twMerge("todo-item", todo.isDone && "todo-item-done")}>
+    <div
+      className={twMerge(
+        "todo-item",
+        todo.isDone && "todo-item-done",
+        isUrgent && "todo-item-urgent",
+      )}
+    >
       <div className="todo-content">
         <label className="todo-label">
           <input
@@ -59,6 +73,12 @@ const TodoItem = (props: Props) => {
           <span className="todo-deadline">
             <FontAwesomeIcon icon={faClock} flip="horizontal" />
             {formattedDate(todo.deadline)}
+          </span>
+        )}
+
+        {isUrgent && (
+          <span className="todo-deadline-alert">
+            {isOverdue ? "期限切れ" : "期限まで24時間以内"}
           </span>
         )}
 
